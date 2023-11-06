@@ -1,0 +1,60 @@
+<h1>Hello Chat!</h1>
+<ul id="chats">
+
+</ul>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+  const chatsList = document.getElementById("chats");  // An mqtt variable will be initialized globally
+  console.log(mqtt);
+
+  /***
+   * Browser
+   * This document explains how to use MQTT over WebSocket with the ws and wss protocols.
+   * EMQX's default port for ws connection is 8083 and for wss connection is 8084.
+   * Note that you need to add a path after the connection address, such as /mqtt.
+   */
+  const url = "ws://broker.emqx.io:8083/mqtt";
+  /***
+   * Node.js
+   * This document explains how to use MQTT over TCP with both mqtt and mqtts protocols.
+   * EMQX's default port for mqtt connections is 1883, while for mqtts it is 8883.
+   */
+  // const url = 'mqtt://broker.emqx.io:1883'
+
+  // Create an MQTT client instance
+  const options = {
+    // Clean session
+    clean: true,
+    connectTimeout: 4000,
+    // Authentication
+    clientId: "emqx_test",
+    username: "emqx",
+    password: "public",
+  };
+  const client = mqtt.connect(url, options);
+  client.on("connect", function () {
+    console.log("Connected");
+    // Subscribe to a topic
+    client.subscribe("bpp-1", function (err) {
+      if (!err) {
+        // Publish a message to a topic
+        client.publish("bpp-1", "Hello mqtt");
+      }
+    });
+  });
+
+  // Receive messages
+  client.on("message", function (topic, message) {
+    // message is Buffer
+    console.log(message.toString());
+
+    let newChat = document.createElement("li");
+  
+    // Set the text content for the new <li> element
+    newChat.textContent = message.toString();
+  
+    // Append the new <li> element to the <ul> list
+    chatsList.appendChild(newChat);
+  });
+</script>

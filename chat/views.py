@@ -8,7 +8,7 @@ from chat.mqtt import client as mqtt_client
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
-    return HttpResponse("Hello, chat!")
+    return render(request, "chat/chat.html")
 
 @csrf_exempt
 def publish_message(request):
