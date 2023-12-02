@@ -6,6 +6,7 @@
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <script>
   const chatsList = document.getElementById("chats");  // An mqtt variable will be initialized globally
+  const currentUsename = "diii"
   console.log(mqtt);
 
   /***
@@ -45,15 +46,19 @@
   });
 
   // Receive messages
-  client.on("message", function (topic, message) {
+  client.on("message", function (topic, payload) {
     // message is Buffer
-    console.log(message.toString());
+    // console.log(message.toString());
+    console.log(`Topic: ${topic}, Message: ${payload.toString()}, QoS: ${packet.qos}`)
 
     let newChat = document.createElement("li");
   
     // Set the text content for the new <li> element
     newChat.textContent = message.toString();
-  
+    if (currentUsename == username) {
+      newChat.style = "color:red"      
+    }
+
     // Append the new <li> element to the <ul> list
     chatsList.appendChild(newChat);
   });

@@ -1,0 +1,35 @@
+@startuml "database schema"
+
+entity users {
+    id : uuid
+    --
+    name : string
+    --
+    email : string
+}
+
+entity groups {
+    id : uuid
+    --q
+    name : string
+    --
+    active_period : datetime
+    --
+    created_at : timestamp
+}
+
+entity messages {
+    id : int
+    --
+    user_id : uuid
+    --
+    group_id : uuid
+    --
+    message : text
+}
+
+users ||--|{ messages
+users ||--|{ groups
+groups ||--|{ messages
+
+@enduml

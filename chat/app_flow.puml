@@ -1,0 +1,30 @@
+@startuml "app flow"
+
+package "Server" {
+    [Restful API]
+    
+}
+
+node "MQTT Broker" {
+    [Broker]
+}
+
+node "Client/Browser1" {
+    [APIClient1]
+    [MQTTClient1]
+}
+
+node "Client/Browser2" {
+    [APIClient2]
+    [MQTTClient2]
+}
+
+APIClient1 --> [Restful API]
+APIClient2 --> [Restful API]
+Broker --> MQTTClient1
+Broker --> MQTTClient2
+[Restful API] --> Broker
+' MQTT Broker --> MQTTClient1
+' MQTT --> MQTTClient2
+
+@enduml
